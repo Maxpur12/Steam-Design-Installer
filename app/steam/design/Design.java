@@ -58,9 +58,11 @@ public class Design extends Thread {
      */
     public void Install(String url1) {
         try {
+
+            /*-----------------------------*/
             PROGRESS = 0.0;
             Main.pb.setProgress(PROGRESS);
-
+            /*-----------------------------*/
             FileUtils.deleteDirectory(new File("ziel/"));
             url = new URL(url1);
 
@@ -73,9 +75,10 @@ public class Design extends Thread {
             con.setRequestProperty("REFERER", link);
 
             FileUtils.copyInputStreamToFile(con.getInputStream(), dest);  //Datei herunterladen und in Ausgabedatei speichern
-
+            /*-----------------------------*/
             PROGRESS = 0.25;
             Main.pb.setProgress(PROGRESS);
+            /*-----------------------------*/
             if(System.getProperty("os.name").contains("Windows")){
                 InstallWindows();
             }
@@ -107,7 +110,7 @@ public class Design extends Thread {
      * 5.Design in Steam Ordner verschieben und Registrywert ändern
      * 6.Heruntergeladenen Inhalt löschen
      */
-    private void InstallWindows(){
+    public  void InstallWindows(){
 
         if (System.getenv("ProgramFiles(x86)") != null) {  //Installationspfad �ber Registry finden
             installPath = Advapi32Util.registryGetStringValue(WinReg.HKEY_LOCAL_MACHINE, "Software\\Wow6432Node\\Valve\\Steam", "InstallPath");  //64 Bit
@@ -119,9 +122,10 @@ public class Design extends Thread {
         if(!Advapi32Util.registryValueExists(WinReg.HKEY_CURRENT_USER, "Software\\Valve\\Steam", "SkinV4")){	//Wenn Registry Eintrag nicht existert
             Advapi32Util.registrySetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Valve\\Steam", "SkinV4", designName);	//Erstelle Registryeintrag
         }
-
+        /*-----------------------------*/
         PROGRESS = 0.5;
         Main.pb.setProgress(PROGRESS);
+        /*-----------------------------*/
        // System.out.println( "Skin: " +_skin);	//Debuggen
 
         try {
@@ -143,15 +147,19 @@ public class Design extends Thread {
                         }
                     }
                 }
+                /*-----------------------------*/
                 PROGRESS = 0.75;
                 Main.pb.setProgress(PROGRESS);
-
+                /*-----------------------------*/
                 FileUtils.copyDirectory(new File("ziel/" + designName), new File(String.valueOf(installPath) + "/skins/" + designName)); //Skin Ordner in Steam Ordner kopieren
                 Advapi32Util.registrySetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Valve\\Steam", "SkinV4", designName);	//Registryeintrag �ndern
                 FileUtils.deleteDirectory(new File("ziel/"));	//Ordner l�schen
               //  installDone("Das ausgewählte Design ist nun Installiert. Starten Sie STEAM neu.");
+
+                /*-----------------------------*/
                 PROGRESS = 1.0;
                 Main.pb.setProgress(PROGRESS);
+                /*-----------------------------*/
             }
         } catch (Exception e) {
             DesignError(e);

@@ -1,5 +1,6 @@
 package app.steam.design;
 
+        import app.steam.web.OpenBrowser;
         import javafx.application.Application;
         import javafx.collections.FXCollections;
         import javafx.collections.ObservableList;
@@ -18,7 +19,7 @@ package app.steam.design;
  * @author Max
  */
 public class Main extends Application {
-    private String version = "0.2.5";
+    private String version = "0.3.0";
 
     public Design aktuell = new Design(null, null);
     private File designDatei = new File("design.txt");
@@ -80,6 +81,17 @@ public class Main extends Application {
 
             });
 
+        /**
+         * WebBrowser um Steam Herungerzuladen
+         */
+
+        Button webButton = new Button("Steam herunterladen");
+        webButton.setOnAction(event -> {
+            Stage stage = new Stage();
+            OpenBrowser webSteam = new OpenBrowser("http://store.steampowered.com/about/", "Steam herunterladen");
+            webSteam.start(stage);
+        });
+
         Label versionInfo = new Label("Version: " + version);
         Label bsInfo = new Label(System.getProperty("os.name") + " wurde erkannt");
 
@@ -108,10 +120,10 @@ public class Main extends Application {
 
         hbox.getChildren().addAll(bsInfo);
         //vbox.getChildren().addAll(versionInfo,error, cb, install);
-        vbox.getChildren().addAll(versionInfo,error, admin,  list, install, laden, pb);
+        vbox.getChildren().addAll(versionInfo,error, admin,  list, install, laden, pb, webButton);
 
         Scene scene = new Scene(root, 250, 300);
-        primaryStage.setTitle("Steam Design Picker");
+        primaryStage.setTitle("Steam Design Installer");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
